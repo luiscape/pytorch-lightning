@@ -1,81 +1,71 @@
-#!/usr/bin/env python
-
 import os
+
+from setuptools import setup
 from io import open
-# Always prefer setuptools over distutils
-from setuptools import setup, find_packages
-
-try:
-    import builtins
-except ImportError:
-    import __builtin__ as builtins
-
-# https://packaging.python.org/guides/single-sourcing-package-version/
-# http://blog.ionelmc.ro/2014/05/25/python-packaging/
-
-PATH_ROOT = os.path.dirname(__file__)
-builtins.__LIGHTNING_SETUP__ = True
-
-import pytorch_lightning  # noqa: E402
+from pt_lightning_sphinx_theme import __version__
 
 
-def load_requirements(path_dir=PATH_ROOT, comment_char='#'):
-    with open(os.path.join(path_dir, 'requirements.txt'), 'r') as file:
-        lines = [ln.strip() for ln in file.readlines()]
-    reqs = []
-    for ln in lines:
-        # filer all comments
-        if comment_char in ln:
-            ln = ln[:ln.index(comment_char)]
-        if ln:  # if requirement is not empty
-            reqs.append(ln)
-    return reqs
+def package_files(directory:str):
+    """
+    Traverses target directory recursivery adding file paths to a list.
+    Original solution found at:
 
+        * https://stackoverflow.com/questions/27664504/\
+            how-to-add-package-data-recursively-in-python-setup-py
 
-# https://packaging.python.org/discussions/install-requires-vs-requirements /
-# keep the meta-data here for simplicity in reading this file... it's not obvious
-# what happens and to non-engineers they won't know to look in init ...
-# the goal of the project is simplicity for researchers, don't want to add too much
-# engineer specific practices
+    Parameters
+    ----------
+    directory: str
+        Target directory to traverse.
+
+    Returns
+    -------
+    paths: list
+        List of file paths.
+    """ 
+    paths = []
+    for (path, directories, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join('..', path, filename))
+
+    return paths
+
 setup(
-    name='pytorch-lightning',
-    version=pytorch_lightning.__version__,
-    description=pytorch_lightning.__docs__,
-    author=pytorch_lightning.__author__,
-    author_email=pytorch_lightning.__author_email__,
-    url=pytorch_lightning.__homepage__,
-    download_url='https://github.com/PyTorchLightning/pytorch-lightning',
-    license=pytorch_lightning.__license__,
-    packages=find_packages(exclude=['tests']),
-
-    long_description=open('README.md', encoding='utf-8').read(),
-    long_description_content_type='text/markdown',
+    name = 'pt_lightning_sphinx_theme',
+    version =__version__,
+    author = 'Shift Lab',
+    author_email= 'info@shiftlabny.com',
+    url="https://github.com/pytorch/lightning_sphinx_theme",
+    docs_url="https://github.com/pytorch/lightning_sphinx_theme",
+    description='PyTorch Sphinx Theme',
+    py_modules = ['pt_lightning_sphinx_theme'],
+    packages = ['pt_lightning_sphinx_theme'],
     include_package_data=True,
     zip_safe=False,
-
-    keywords=['deep learning', 'pytorch', 'AI'],
-    python_requires='>=3.6',
-    setup_requires=[],
-    install_requires=load_requirements(PATH_ROOT),
-
+    package_data={'pt_lightning_sphinx_theme': [
+        'theme.conf',
+        '*.html',
+        'theme_variables.jinja',
+        *package_files('pt_lightning_sphinx_theme/static')
+    ]},
+    entry_points = {
+        'sphinx.html_themes': [
+            'pt_lightning_sphinx_theme = pt_lightning_sphinx_theme',
+        ]
+    },
+    license= 'MIT License',
     classifiers=[
-        'Environment :: Console',
-        'Natural Language :: English',
-        # How mature is this project? Common values are
-        #   3 - Alpha, 4 - Beta, 5 - Production/Stable
-        'Development Status :: 4 - Beta',
-        # Indicate who your project is intended for
-        'Intended Audience :: Developers',
-        'Topic :: Scientific/Engineering :: Artificial Intelligence',
-        'Topic :: Scientific/Engineering :: Image Recognition',
-        'Topic :: Scientific/Engineering :: Information Analysis',
-        # Pick your license as you wish
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-        # Specify the Python versions you support here. In particular, ensure
-        # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "Intended Audience :: System Administrators",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Topic :: Internet",
+        "Topic :: Software Development :: Documentation"
     ],
+    install_requires=[
+       'sphinx'
+    ]
 )

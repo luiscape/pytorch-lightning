@@ -1,441 +1,187 @@
-<div align="center">
+# PyTorch-Lightning Sphinx Theme
 
-![Logo](docs/source/_static/images/lightning_logo_small.png)
+Sphinx theme for [PyTorch-Lightning Docs](https://pytorch-lightning.readthedocs.io/en/latest/) based on the [Read the Docs Sphinx Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest).
 
-# PyTorch Lightning
+## Local Development
 
-**The lightweight PyTorch wrapper for ML researchers. Scale your models. Write less boilerplate.**
+Run python setup:
 
-
-[![PyPI Status](https://badge.fury.io/py/pytorch-lightning.svg)](https://badge.fury.io/py/pytorch-lightning)
-[![PyPI Status](https://pepy.tech/badge/pytorch-lightning)](https://pepy.tech/project/pytorch-lightning)
-[![Build Status](https://travis-ci.org/PytorchLightning/pytorch-lightning.svg?branch=master)](https://travis-ci.org/PytorchLightning/pytorch-lightning)
-[![Build status](https://ci.appveyor.com/api/projects/status/NEW-PROJECT-ID?svg=true)](https://ci.appveyor.com/project/PytorchLightning/pytorch-lightning)
-[![Coverage](docs/source/_static/images/coverage.svg)](https://github.com/PytorchLightning/pytorch-lightning/tree/master/tests#running-coverage)
-[![CodeFactor](https://www.codefactor.io/repository/github/borda/pytorch-lightning/badge)](https://www.codefactor.io/repository/github/borda/pytorch-lightning)    
-
-[![ReadTheDocs](https://readthedocs.org/projects/pytorch-lightning/badge/?version=latest)](https://pytorch-lightning.readthedocs.io/en/latest)
-[![Slack](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://join.slack.com/t/pytorch-lightning/shared_invite/enQtODU5ODIyNTUzODQwLTFkMDg5Mzc1MDBmNjEzMDgxOTVmYTdhYjA1MDdmODUyOTg2OGQ1ZWZkYTQzODhhNzdhZDA3YmNhMDhlMDY4YzQ)
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/PytorchLightning/pytorch-lightning/blob/master/LICENSE)
-[![Next Release](https://img.shields.io/badge/Next%20Release-Feb%206-<COLOR>.svg)](https://shields.io/)
-
-<!-- 
-removed until codecov badge isn't empy. likely a config error showing nothing on master.
-[![codecov](https://codecov.io/gh/Borda/pytorch-lightning/branch/master/graph/badge.svg)](https://codecov.io/gh/Borda/pytorch-lightning)
--->
-
-</div>
-
-Simple installation from PyPI
-```bash
-pip install pytorch-lightning  
+```
+python setup.py install
 ```
 
-## Docs   
-**[View the docs here](https://pytorch-lightning.readthedocs.io/en/latest)**
+and install the dependencies using `pip install -r docs/requirements.txt`
 
-## Demo  
-[Copy and run this COLAB!](https://colab.research.google.com/drive/1F_RNcHzTfFuQf-LeKvSlud6x7jXYkG31#scrollTo=HOk9c4_35FKg)
+In the root directory install the `package.json`:
 
-## What is it?  
-Lightning is a very lightweight wrapper on PyTorch that decouples the science code from the engineering code. It's more of a style-guide than a framework. By refactoring your code, we can automate most of the non-research code.  
+```
+# node version 8.4.0
+yarn install
 
-To use Lightning, simply refactor your research code into the [LightningModule](https://github.com/PytorchLightning/pytorch-lightning#how-do-i-do-use-it) format (the science) and Lightning will automate the rest (the engineering). Lightning guarantees tested, correct, modern best practices for the automated parts.
-
-- If you are a researcher, Lightning is infinitely flexible, you can modify everything down to the way .backward is called or distributed is set up. 
-- If you are a scientist or production team, lightning is very simple to use with best practice defaults.
-
-## What does lightning control for me?   
-
-Everything in Blue!   
-This is how lightning separates the science (red) from the engineering (blue).
-
-![Overview](docs/source/_static/images/pl.gif)
-
-## How much effort is it to convert?
-You're probably tired of switching frameworks at this point. But it is a very quick process to refactor into the Lightning format (ie: hours). [Check out this tutorial](https://towardsdatascience.com/how-to-refactor-your-pytorch-code-to-get-these-42-benefits-of-pytorch-lighting-6fdd0dc97538)
-
-## Starting a new project?   
-[Use our seed-project aimed at reproducibility!](https://github.com/PytorchLightning/pytorch-lightning-conference-seed)     
-
-## Why do I want to use lightning?
-Every research project starts the same, a model, a training loop, validation loop, etc. As your research advances, you're likely to need distributed training, 16-bit precision, checkpointing, gradient accumulation, etc.   
-
-Lightning sets up all the boilerplate state-of-the-art training for you so you can focus on the research.   
-
----
- 
-## README Table of Contents        
-- [How do I use it](https://github.com/PytorchLightning/pytorch-lightning#how-do-i-do-use-it)     
-- [What lightning automates](https://github.com/PytorchLightning/pytorch-lightning#what-does-lightning-control-for-me)    
-- [Tensorboard integration](https://github.com/PytorchLightning/pytorch-lightning#tensorboard)    
-- [Lightning features](https://github.com/PytorchLightning/pytorch-lightning#lightning-automates-all-of-the-following-each-is-also-configurable)    
-- [Examples](https://github.com/PytorchLightning/pytorch-lightning#examples)    
-- [Tutorials](https://github.com/PytorchLightning/pytorch-lightning#tutorials)
-- [Contributing](https://github.com/PytorchLightning/pytorch-lightning/blob/master/.github/CONTRIBUTING.md)
-- [Bleeding edge install](https://github.com/PytorchLightning/pytorch-lightning#bleeding-edge)   
-- [Lightning Design Principles](https://github.com/PytorchLightning/pytorch-lightning#lightning-design-principles)   
-- [Asking for help](https://github.com/PytorchLightning/pytorch-lightning#asking-for-help)
-- [FAQ](https://github.com/PytorchLightning/pytorch-lightning#faq)    
-
----
-
-## How do I do use it?   
-Think about Lightning as refactoring your research code instead of using a new framework. The research code goes into a [LightningModule](https://PyTorchLightning.github.io/pytorch-lightning/LightningModule/RequiredTrainerInterface/) which you fit using a Trainer.
-
-The LightningModule defines a *system* such as seq-2-seq, GAN, etc... It can ALSO define a simple classifier such as the example below.     
-
-To use lightning do 2 things:  
-1. [Define a LightningModule](https://PyTorchLightning.github.io/pytorch-lightning/LightningModule/RequiredTrainerInterface/)
-**WARNING:** This syntax is for version 0.5.0+ where abbreviations were removed.
-    ```python
-    import os
-    
-    import torch
-    from torch.nn import functional as F
-    from torch.utils.data import DataLoader
-    from torchvision.datasets import MNIST
-    from torchvision import transforms
-    
-    import pytorch_lightning as pl
-    
-    class CoolSystem(pl.LightningModule):
-    
-        def __init__(self):
-            super(CoolSystem, self).__init__()
-            # not the best model...
-            self.l1 = torch.nn.Linear(28 * 28, 10)
-    
-        def forward(self, x):
-            return torch.relu(self.l1(x.view(x.size(0), -1)))
-    
-        def training_step(self, batch, batch_idx):
-            # REQUIRED
-            x, y = batch
-            y_hat = self.forward(x)
-            loss = F.cross_entropy(y_hat, y)
-            tensorboard_logs = {'train_loss': loss}
-            return {'loss': loss, 'log': tensorboard_logs}
-    
-        def validation_step(self, batch, batch_idx):
-            # OPTIONAL
-            x, y = batch
-            y_hat = self.forward(x)
-            return {'val_loss': F.cross_entropy(y_hat, y)}
-    
-        def validation_end(self, outputs):
-            # OPTIONAL
-            avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
-            tensorboard_logs = {'val_loss': avg_loss}
-            return {'avg_val_loss': avg_loss, 'log': tensorboard_logs}
-            
-        def test_step(self, batch, batch_idx):
-            # OPTIONAL
-            x, y = batch
-            y_hat = self.forward(x)
-            return {'test_loss': F.cross_entropy(y_hat, y)}
-    
-        def test_end(self, outputs):
-            # OPTIONAL
-            avg_loss = torch.stack([x['test_loss'] for x in outputs]).mean()
-            tensorboard_logs = {'test_loss': avg_loss}
-            return {'avg_test_loss': avg_loss, 'log': tensorboard_logs}
-    
-        def configure_optimizers(self):
-            # REQUIRED
-            # can return multiple optimizers and learning_rate schedulers
-            # (LBFGS it is automatically supported, no need for closure function)
-            return torch.optim.Adam(self.parameters(), lr=0.02)
-    
-        @pl.data_loader
-        def train_dataloader(self):
-            # REQUIRED
-            return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
-    
-        @pl.data_loader
-        def val_dataloader(self):
-            # OPTIONAL
-            return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
-    
-        @pl.data_loader
-        def test_dataloader(self):
-            # OPTIONAL
-            return DataLoader(MNIST(os.getcwd(), train=False, download=True, transform=transforms.ToTensor()), batch_size=32)
-    ```
-2. Fit with a [trainer](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/)    
-    ```python
-    from pytorch_lightning import Trainer
-    
-    model = CoolSystem()
-    
-    # most basic trainer, uses good defaults
-    trainer = Trainer()    
-    trainer.fit(model)   
-    ```
-
-Trainer sets up a tensorboard logger, early stopping and checkpointing by default (you can modify all of them or
-use something other than tensorboard).   
-
-Here are more advanced examples
-```python   
-# train on cpu using only 10% of the data (for demo purposes)
-trainer = Trainer(max_epochs=1, train_percent_check=0.1)
-
-# train on 4 gpus (lightning chooses GPUs for you)
-# trainer = Trainer(max_epochs=1, gpus=4, distributed_backend='ddp')  
-
-# train on 4 gpus (you choose GPUs)
-# trainer = Trainer(max_epochs=1, gpus=[0, 1, 3, 7], distributed_backend='ddp')   
-
-# train on 32 gpus across 4 nodes (make sure to submit appropriate SLURM job)
-# trainer = Trainer(max_epochs=1, gpus=8, num_gpu_nodes=4, distributed_backend='ddp')
-
-# train (1 epoch only here for demo)
-trainer.fit(model)
-
-# view tensorboard logs 
-logging.info(f'View tensorboard logs by running\ntensorboard --logdir {os.getcwd()}')
-logging.info('and going to http://localhost:6006 on your browser')
 ```
 
-When you're all done you can even run the test set separately.   
-```python
-trainer.test()
+If you have `npm` installed then run:
+
+```
+npm install
 ```
 
-**Could be as complex as seq-2-seq + attention**    
+- If you want to see generated documentation for `docs/demo` then create
+`.env.json` file and make it empty json file. Means `.env.json file` will
+contain
 
-```python
-# define what happens for training here
-def training_step(self, batch, batch_idx):
-    x, y = batch
-    
-    # define your own forward and loss calculation
-    hidden_states = self.encoder(x)
-     
-    # even as complex as a seq-2-seq + attn model
-    # (this is just a toy, non-working example to illustrate)
-    start_token = '<SOS>'
-    last_hidden = torch.zeros(...)
-    loss = 0
-    for step in range(max_seq_len):
-        attn_context = self.attention_nn(hidden_states, start_token)
-        pred = self.decoder(start_token, attn_context, last_hidden) 
-        last_hidden = pred
-        pred = self.predict_nn(pred)
-        loss += self.loss(last_hidden, y[step])
-        
-    #toy example as well
-    loss = loss / max_seq_len
-    return {'loss': loss} 
+```
+{}
 ```
 
-**Or as basic as CNN image classification**      
+Run grunt to build the html site and enable live reloading of the demo app at `localhost:1919`:
 
-```python
-# define what happens for validation here
-def validation_step(self, batch, batch_idx):    
-    x, y = batch
-    
-    # or as basic as a CNN classification
-    out = self.forward(x)
-    loss = my_loss(out, y)
-    return {'loss': loss} 
+```
+grunt
 ```
 
-**And you also decide how to collate the output of all validation steps**    
+- If you want to specify the project folder (docs or tutorial for which
+you want to see docs generated) then you need to specify it into `.env.json`
+file:
 
-```python
-def validation_end(self, outputs):
-    """
-    Called at the end of validation to aggregate outputs
-    :param outputs: list of individual outputs of each validation step
-    :return:
-    """
-    val_loss_mean = 0
-    val_acc_mean = 0
-    for output in outputs:
-        val_loss_mean += output['val_loss']
-        val_acc_mean += output['val_acc']
-
-    val_loss_mean /= len(outputs)
-    val_acc_mean /= len(outputs)
-    logs = {'val_loss': val_loss_mean.item(), 'val_acc': val_acc_mean.item()}
-    result = {'log': logs}
-    return result
 ```
-   
-## Tensorboard    
-Lightning is fully integrated with tensorboard, MLFlow and supports any logging module.   
-
-![tensorboard-support](docs/source/_static/images/tf_loss.png)
-
-Lightning also adds a text column with all the hyperparameters for this experiment.      
-
-![tensorboard-support](docs/source/_static/images/tf_tags.png)
-
-## Lightning automates all of the following ([each is also configurable](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/)):
-
-#### Checkpointing    
-
-- [Checkpoint callback](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Checkpointing/#model-saving)
-- [Model saving](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Checkpointing/#model-saving)
-- [Model loading](https://PyTorchLightning.github.io/pytorch-lightning/LightningModule/methods/#load-from-metrics) 
-- [Restoring training session](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Checkpointing/#restoring-training-session)
-
-#### Computing cluster (SLURM)    
-
-- [Running grid search on a cluster](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/SLURM%20Managed%20Cluster#running-grid-search-on-a-cluster) 
-- [Walltime auto-resubmit](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/SLURM%20Managed%20Cluster#walltime-auto-resubmit)   
-
-#### Debugging  
-
-- [Fast dev run](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/debugging/#fast-dev-run)
-- [Inspect gradient norms](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/debugging/#inspect-gradient-norms)
-- [Log GPU usage](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/debugging/#Log-gpu-usage)
-- [Make model overfit on subset of data](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/debugging/#make-model-overfit-on-subset-of-data)
-- [Print the parameter count by layer](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/debugging/#print-the-parameter-count-by-layer)
-- [Print which gradients are nan](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/debugging/#print-which-gradients-are-nan)
-- [Print input and output size of every module in system](https://PyTorchLightning.github.io/pytorch-lightning/LightningModule/properties/#example_input_array)
-
-
-#### Distributed training    
-
-- [Implement Your Own Distributed (DDP) training](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/hooks/#init_ddp_connection)
-- [16-bit mixed precision](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Distributed%20training/#16-bit-mixed-precision)
-- [Multi-GPU](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Distributed%20training/#Multi-GPU)
-- [Multi-node](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Distributed%20training/#Multi-node)
-- [Single GPU](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Distributed%20training/#single-gpu)
-- [Self-balancing architecture](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Distributed%20training/#self-balancing-architecture)
-
-
-#### Experiment Logging   
-
-- [Display metrics in progress bar](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#display-metrics-in-progress-bar)
-- [Log metric row every k batches](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#log-metric-row-every-k-batches)
-- [Process position](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#process-position)
-- [Tensorboard support](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#tensorboard-support)
-- [Save a snapshot of all hyperparameters](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#save-a-snapshot-of-all-hyperparameters) 
-- [Snapshot code for a training run](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#snapshot-code-for-a-training-run) 
-- [Write logs file to csv every k batches](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#write-logs-file-to-csv-every-k-batches)
-- [Logging on W&B](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#w&b)
-- [Logging experiment data to Neptune](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Logging/#neptune-support)
-
-#### Training loop    
-
-- [Accumulate gradients](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Training%20Loop/#accumulated-gradients)
-- [Force training for min or max epochs](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Training%20Loop/#force-training-for-min-or-max-epochs)
-- [Early stopping callback](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Training%20Loop/#early-stopping)
-- [Force disable early stop](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Training%20Loop/#force-disable-early-stop)
-- [Gradient Clipping](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Training%20Loop/#gradient-clipping)
-- [Hooks](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/hooks/)
-- [Learning rate scheduling](https://PyTorchLightning.github.io/pytorch-lightning/LightningModule/RequiredTrainerInterface/#configure_optimizers)    
-- [Use multiple optimizers (like GANs)](https://PyTorchLightning.github.io/pytorch-lightning/LightningModule/RequiredTrainerInterface/#configure_optimizers)
-- [Set how much of the training set to check (1-100%)](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Training%20Loop/#set-how-much-of-the-training-set-to-check)
-- [Step optimizers at arbitrary intervals](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/hooks/#optimizer_step)
-
-#### Validation loop    
-
-- [Check validation every n epochs](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Validation%20loop/#check-validation-every-n-epochs)
-- [Hooks](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/hooks/)
-- [Set how much of the validation set to check](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Validation%20loop/#set-how-much-of-the-validation-set-to-check)
-- [Set how much of the test set to check](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Validation%20loop/#set-how-much-of-the-test-set-to-check)
-- [Set validation check frequency within 1 training epoch](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Validation%20loop/#set-validation-check-frequency-within-1-training-epoch)
-- [Set the number of validation sanity steps](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Validation%20loop/#set-the-number-of-validation-sanity-steps)
-
-#### Testing loop  
-- [Run test set](https://PyTorchLightning.github.io/pytorch-lightning/Trainer/Testing%20loop/)  
-
-## Examples   
-- [GAN](https://github.com/PytorchLightning/pytorch-lightning/tree/master/pl_examples/domain_templates/gan.py)    
-- [MNIST](https://github.com/PytorchLightning/pytorch-lightning/tree/master/pl_examples/basic_examples)      
-- [Other projects using Lightning](https://github.com/PytorchLightning/pytorch-lightning/network/dependents?package_id=UGFja2FnZS0zNzE3NDU4OTM%3D)    
-- [Multi-node](https://github.com/PytorchLightning/pytorch-lightning/tree/master/pl_examples/multi_node_examples)   
-
-## Tutorials   
-- [Basic Lightning use](https://towardsdatascience.com/supercharge-your-ai-research-with-pytorch-lightning-337948a99eec)    
-- [9 key speed features in Pytorch-Lightning](https://towardsdatascience.com/9-tips-for-training-lightning-fast-neural-networks-in-pytorch-8e63a502f565)    
-- [SLURM, multi-node training with Lightning](https://towardsdatascience.com/trivial-multi-node-training-with-pytorch-lightning-ff75dfb809bd)     
-
----
-
-## Asking for help    
-Welcome to the Lightning community!   
-
-If you have any questions, feel free to:   
-1. [read the docs](https://PyTorchLightning.github.io/pytorch-lightning/).     
-2. [Search through the issues](https://github.com/PytorchLightning/pytorch-lightning/issues?utf8=%E2%9C%93&q=my++question).      
-3. [Ask on stackoverflow](https://stackoverflow.com/questions/ask?guided=false) with the tag pytorch-lightning.   
-
-If no one replies to you quickly enough, feel free to post the stackoverflow link to our [Slack channel](https://join.slack.com/t/pytorch-lightning/shared_invite/enQtODU5ODIyNTUzODQwLTFkMDg5Mzc1MDBmNjEzMDgxOTVmYTdhYjA1MDdmODUyOTg2OGQ1ZWZkYTQzODhhNzdhZDA3YmNhMDhlMDY4YzQ)!       
-
----   
-## FAQ    
-**How do I use Lightning for rapid research?**   
-[Here's a walk-through](https://PyTorchLightning.github.io/pytorch-lightning/)  
-
-**Why was Lightning created?**     
-Lightning has 3 goals in mind:
-1. Maximal flexibility while abstracting out the common boilerplate across research projects.   
-2. Reproducibility. If all projects use the LightningModule template, it will be much much easier to understand what's going on and where to look! It will also mean every implementation follows a standard format.   
-3. Democratizing PyTorch power user features. Distributed training? 16-bit? know you need them but don't want to take the time to implement? All good... these come built into Lightning.    
-
-**How does Lightning compare with Ignite and fast.ai?**     
-[Here's a thorough comparison](https://medium.com/@_willfalcon/pytorch-lightning-vs-pytorch-ignite-vs-fast-ai-61dc7480ad8a).    
-
-**Is this another library I have to learn?**    
-Nope! We use pure Pytorch everywhere and don't add unecessary abstractions!   
-
-**Are there plans to support Python 2?**          
-Nope.     
-
-**Are there plans to support virtualenv?**    
-Nope. Please use anaconda or miniconda.    
-
-**Which PyTorch versions do you support?**    
-- **PyTorch 1.1.0**       
-    ```bash    
-    # install pytorch 1.1.0 using the official instructions   
-    
-    # install test-tube 0.6.7.6 which supports 1.1.0   
-    pip install test-tube==0.6.7.6   
-    
-    # install latest Lightning version without upgrading deps    
-    pip install -U --no-deps pytorch-lightning
-    ```     
-- **PyTorch 1.2.0, 1.3.0,**
-    Install via pip as normal   
-
-## Custom installation
-
-### Bleeding edge
-
-If you can't wait for the next release, install the most up to date code with:
-* using GIT (locally clone whole repo with full history)
-    ```bash
-    pip install git+https://github.com/PytorchLightning/pytorch-lightning.git@master --upgrade
-    ```
-* using instant zip (last state of the repo without git history)
-    ```bash
-    pip install https://github.com/PytorchLightning/pytorch-lightning/archive/master.zip --upgrade
-    ```
-
-### Any release installation
-
-You can also install any past release from this repository:
-```bash
-pip install https://github.com/PytorchLightning/pytorch-lightning/archive/0.4.4.zip --upgrade
+{
+    "DOCS_DIR": "docs/",
+    "TUTORIALS_DIR": "path/to/tutorial/directory"
+}
 ```
 
-## Bibtex
-If you want to cite the framework feel free to use this (but only if you loved it 😊):
+Run grunt to build the html site for docs:
+
 ```
-@misc{Falcon2019,
-  author = {Falcon, W.A.},
-  title = {PyTorch Lightning},
-  year = {2019},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/PytorchLightning/pytorch-lightning}}
+grunt --project=docs
+```
+
+and to build the html site for tutorial:
+
+```
+grunt --project=tutorials
+```
+
+The resulting site is a demo.
+
+## Testing your changes and submitting a PR
+
+When you are ready to submit a PR with your changes you can first test that your changes have been applied correctly against either the PyTorch Docs or Tutorials repo:
+
+1. Run the `grunt build` task on your branch and commit the build to Github.
+2. In your local docs or tutorials repo, remove any existing `pt_lightning_sphinx_theme` packages in the `src` folder (there should be a `pip-delete-this-directory.txt` file there)
+3. In `requirements.txt` replace the existing git link with a link pointing to your commit or branch, e.g. `-e git+git://github.com/{ your repo }/lightning_sphinx_theme.git@{ your commit hash }#egg=pt_lightning_sphinx_theme`
+4. Install the requirements `pip install -r requirements.txt`
+5. Remove the current build. In the docs this is `make clean`, tutorials is `make clean-cache`
+6. Build the static site. In the docs this is `make html`, tutorials is `make html-noplot`
+7. Open the site and look around. In the docs open `docs/build/html/index.html`, in the tutorials open `_build/html.index.html`
+
+If your changes have been applied successfully, remove the build commit from your branch and submit your PR.
+
+## Publishing the theme
+
+Before the new changes are visible in the theme the maintainer will need to run the build process:
+
+```
+grunt build
+```
+
+Once that is successful commit the change to Github.
+
+### Developing locally against PyTorch Docs and Tutorials
+
+To be able to modify and preview the theme locally against the PyTorch Lightning Docs and/or the PyTorch Lightning Tutorials first clone the repositories:
+
+- [PyTorch Lightning (Docs)](https://github.com/pytorch/pytorch)
+- [PyTorch Lightning Tutorials](https://github.com/pytorch/tutorials)
+
+Then follow the instructions in each repository to make the docs.
+
+Once the docs have been successfully generated you should be able to run the following to create an html build.
+
+#### Docs
+
+```
+# in ./docs
+make html
+```
+
+#### Tutorials
+
+```
+# root directory
+make html
+```
+
+Once these are successful, navigate to the `conf.py` file in each project. In the Docs these are at `./docs/source`. The Tutorials one can be found in the root directory.
+
+In `conf.py` change the html theme to `pt_lightning_sphinx_theme` and point the html theme path to this repo's local folder, which will end up looking something like:
+
+```
+html_theme = 'pt_lightning_sphinx_theme'
+html_theme_path = ["../../../lightning_sphinx_theme"]
+```
+
+Next create a file `.env.json` in the root of this repo with some keys/values referencing the local folders of the Docs and Tutorials repos:
+
+```
+{
+  "TUTORIALS_DIR": "../tutorials",
+  "DOCS_DIR": "../pytorch_lightning/docs/source"
+}
+
+```
+
+You can then build the Docs or Tutorials by running
+
+```
+grunt --project=docs
+```
+or
+
+```
+grunt --project=tutorials
+```
+
+These will generate a live-reloaded local build for the respective projects available at `localhost:1919`.
+
+Note that while live reloading works these two projects are hefty and will take a few seconds to build and reload, especially the Docs.
+
+### Built-in Stylesheets and Fonts
+
+There are a couple of stylesheets and fonts inside the Docs and Tutorials repos themselves meant to override the existing theme. To ensure the most accurate styles we should comment out those files until the maintainers of those repos remove them:
+
+#### Docs
+
+```
+# ./docs/source/conf.py
+
+html_context = {
+    # 'css_files': [
+    #     'https://fonts.googleapis.com/css?family=Lato',
+    #     '_static/css/pytorch_theme.css'
+    # ],
+}
+```
+
+#### Tutorials
+
+```
+# ./conf.py
+
+# app.add_stylesheet('css/pytorch_theme.css')
+# app.add_stylesheet('https://fonts.googleapis.com/css?family=Lato')
+```
+
+### Top/Mobile Navigation
+
+The top navigation and mobile menu expect an "active" state for one of the menu items. To ensure that either "Docs" or "Tutorials" is marked as active, set the following config value in the respective `conf.py`, where `{project}` is either `"docs"` or `"tutorials"`.
+
+```
+html_theme_options = {
+  ...
+  'pytorch_project': {project}
+  ...
 }
 ```
